@@ -1,11 +1,13 @@
 import os
 import mysql.connector
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 host = "localhost"
 user = "userpython"
 password = "339933"
 database = "study"
-folder = "queries"
+folder = os.path.join(script_dir, "queries")
 
 
 def local_query(sql_query):
@@ -29,14 +31,17 @@ def query_from_file(file_name):
 def main():
     while True:
         try:
-            query_number = int(input("Введите номер запроса для выполнения: "))
+            query_number = input("Введите номер запроса для выполнения (0 для выхода): ")
+            if query_number == '0':
+                print("Завершение работы приложения.")
+                break
             file_path = os.path.join(folder, f"{query_number}query.sql")
             sql_query = query_from_file(file_path)
             local_query(sql_query)
         except FileNotFoundError:
-            print("Файл не найден. Пожалуйста, введите существующий номер запроса.")
+            print("Файл не найден. Введите существующий номер запроса.")
         except ValueError:
-            print("Пожалуйста, введите корректный номер запроса (целое число).")
+            print("Введите корретный номер запроса (целое число)")
         except Exception as e:
             print(f"Произошла ошибка: {e}")
 
